@@ -1,3 +1,4 @@
+/* globals CSInterface, cep, SystemPath */
 'use strict';
 
 angular.module('codemill.adobe', [])
@@ -11,7 +12,7 @@ angular.module('codemill.adobe', [])
         csInterface.evalScript(script, function(data) {
           deferred.resolve(returnIsObject ? JSON.parse(data) : data);
         });
-        return deferred.promise();
+        return deferred.promise;
       }
 
       function variableAsString(variable) {
@@ -21,13 +22,17 @@ angular.module('codemill.adobe', [])
 
       var callToScript = function(callOpts) {
         var call = callOpts.method + '(';
-        if (callOpts.args.length > 0) {
+        if (callOpts.args && callOpts.args.length > 0) {
           var first = true;
           for (var i = 0; i < callOpts.args.length; i++) {
             if (!first) {
               call += ', ';
             }
-            call += variableAsString(arguments[i]);
+            var arg = callOpts.args[i];
+            if (typeof(arg) === 'object') {
+              arg = JSON.stringify(arg);
+            }
+            call += variableAsString(arg);
             first = false;
           }
         }
@@ -101,17 +106,18 @@ angular.module('codemill.adobe', [])
           case 'null':
             return null;
           case 'full':
+            if (hostAvailable) {
+              cep.fs.makedir(config.filePath);
+            }
             return config.filePath;
           default:
             base = getBase(config.pathType);
             break;
         }
         var filePath = base + config.filePath;
-        if (hostAvailable) {
-          cep.fs.makedir(filePath);
-        }
         if (!config.isFile) {
           if (hostAvailable) {
+            cep.fs.makedir(filePath);
             filePath += pathSeparator();
           } else {
             filePath += '/';
