@@ -150,7 +150,7 @@ describe('codemill.adobe.cmAdobeService', function () {
     var data = { test : 42 };
     var arg = { tmp : 1 };
     var success = jasmine.createSpy('success');
-    service.callCS({ method : 'test', args : [ arg, 'tmp' ] }, true).then(success);
+    service.callCS({ method : 'test', args : [ arg, 'tmp' ], returnsObject : true }).then(success);
     expect(evalScriptStr).toBe('test(\'' + JSON.stringify(arg) + '\', \'tmp\')');
     result(data, true);
     scope.$apply();

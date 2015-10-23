@@ -40,9 +40,9 @@ angular.module('codemill.adobe', [])
         return call;
       };
 
-      this.callCS = function(callOpts, returnIsObject) {
+      this.callCS = function(callOpts) {
         if (hostAvailable) {
-          return evalCSScriptDefer(callToScript(callOpts), returnIsObject);
+          return evalCSScriptDefer(callToScript(callOpts), callOpts.returnsObject);
         } else {
           return $q.when();
         }
