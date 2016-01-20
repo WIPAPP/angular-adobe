@@ -93,7 +93,7 @@ angular.module('codemill.adobe', [])
               type = SystemPath.MY_DOCUMENTS;
               break;
           }
-          return csInterface.getSystemPath(type) + pathSeparator();
+          return csInterface.getSystemPath(type) + pathSeparator().replace(/\\/g, '/');
         }
       };
 
@@ -124,7 +124,7 @@ angular.module('codemill.adobe', [])
           }
         }
         $log.info('File path ' + filePath);
-        return filePath;
+        return filePath.replace(/\\/g, '/');;
       };
 
       this.isHostAvailable = function () {

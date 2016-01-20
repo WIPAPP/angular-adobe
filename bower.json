@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "Adobe base module for AngularJS",
   "authors": [
-    "Codemill <info@codemill.se>"
+    "Codemill <info@codemill.se>", "Jimmi Corbishley <jimmi@wipster.io>"
   ],
   "main": "index.js",
   "keywords": [
