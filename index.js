@@ -9,8 +9,20 @@ angular.module('codemill.adobe', [])
 
       function evalCSScriptDefer(script, returnIsObject) {
         var deferred = $q.defer();
-        csInterface.evalScript(script, function(data) {
-          deferred.resolve(returnIsObject ? JSON.parse(data) : data);
+        csInterface.evalScript(script, function (data) {
+            if (!returnIsObject && returnIsObject !== 'true') {
+                deferred.resolve(data)
+            }
+            else {
+                var json;
+                try {
+                    json = JSON.parse(data);
+                    deferred.resolve(json);
+                } catch (error) {
+                    $log.debug(error);
+                    deferred.reject({error : error, data : data});
+                }
+            }
         });
         return deferred.promise;
       }
