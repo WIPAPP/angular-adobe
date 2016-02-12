@@ -5,18 +5,22 @@ angular.module('codemill.adobe', [])
   .service('cmAdobeService', ['$window', '$q', '$log',
     function ($window, $q, $log) {
       var csInterface = new CSInterface();
-      var hostAvailable = typeof(csInterface.openURLInDefaultBrowser) !== 'undefined';
+      var hostAvailable = typeof csInterface.openURLInDefaultBrowser !== 'undefined';
 
       function evalCSScriptDefer(script, returnIsObject) {
         var deferred = $q.defer();
         $log.debug('script', script);
         csInterface.evalScript(script, function (data) {
-            if (!returnIsObject && returnIsObject !== 'true') {
+            if (typeof returnIsObject === 'undefined' || returnIsObject === null || returnIsObject !== 'true') {
                 deferred.resolve(data)
             }
             else {
                 var json;
                 try {
+                    if(typeof data !== 'string')
+                    {
+                        data = JSON.stringify(data);
+                    }
                     json = JSON.parse(data);
                     deferred.resolve(json);
                 } catch (error) {
@@ -29,7 +33,7 @@ angular.module('codemill.adobe', [])
       }
 
       function variableAsString(variable) {
-        return variable === undefined ? 'undefined' :
+        return typeof variable === 'undefined' ? 'undefined' :
           (variable === null ? 'null' : '\'' + variable + '\'');
       }
 
@@ -42,7 +46,7 @@ angular.module('codemill.adobe', [])
               call += ', ';
             }
             var arg = callOpts.args[i];
-            if (typeof(arg) === 'object') {
+            if (typeof arg === 'object') {
               arg = JSON.stringify(arg);
             }
             call += variableAsString(arg);
@@ -86,7 +90,7 @@ angular.module('codemill.adobe', [])
 
       var getBase = function(pathType) {
         if (!hostAvailable) {
-          if (pathType === undefined || pathType === null) {
+          if (typeof pathType === 'undefined' || pathType === null) {
             pathType = 'documents';
           }
           return '/tmp/' + pathType + '/';
@@ -111,7 +115,7 @@ angular.module('codemill.adobe', [])
       };
 
       this.getFilePath = function (config) {
-        if (config === undefined || config === null) {
+        if (typeof config === 'undefined' || config === null) {
           return config;
         }
         var base = null;
