@@ -25,7 +25,13 @@ angular.module('codemill.adobe', [])
                     deferred.resolve(json);
                 } catch (error) {
                     $log.debug(error);
-                    deferred.reject({ error: error, data: (data + ': ' + script) });
+                    if(typeof data === 'undefined' || data === null || typeof script === 'undefined' || script === null)
+                    {
+                        deferred.reject(error);
+                    }else {
+                        deferred.reject({ error: error, data: (data + ': ' + script) });
+                    }
+
                 }
             }
         });
