@@ -5,35 +5,35 @@ angular.module('codemill.adobe', [])
   .service('cmAdobeService', ['$window', '$q', '$log',
     function ($window, $q, $log) {
       var csInterface = new CSInterface();
-      var hostAvailable = typeof csInterface.openURLInDefaultBrowser !== 'undefined';
+      var hostAvailable = typeof csInterface.openURLInDefaultBrowser !== "undefined";
 
       function evalCSScriptDefer(script, returnIsObject) {
         var deferred = $q.defer();
         $log.debug('script', script);
         try {
         csInterface.evalScript(script, function (data) {
-            if (typeof returnIsObject === 'undefined' || returnIsObject === null || returnIsObject !== true) {
+            if (typeof returnIsObject === "undefined" || returnIsObject === null || returnIsObject !== true) {
                 deferred.resolve(data)
             }
             else {
-                var json;
-                try {
-                    if(typeof data !== 'string')
-                    {
-                        data = JSON.stringify(data);
-                    }
-                    json = JSON.parse(data);
-                    deferred.resolve(json);
-                } catch (error) {
-                    $log.debug(error);
-                    if(typeof data === 'undefined' || data === null || typeof script === 'undefined' || script === null)
-                    {
-                        deferred.reject(error);
-                    }else {
-                        deferred.reject({ error: error, data: (data + ': ' + script) });
-                    }
+                if(typeof data !== "undefined" && data !== null)
+                {
+                    try {
+                        deferred.resolve(JSON.parse(data));
+                    } catch (error) {
+                        $log.debug(error);
+                        if(typeof data === "undefined" || data === null || typeof script === "undefined" || script === null)
+                        {
+                            deferred.reject(error);
+                        }else {
+                            deferred.reject({ error: error, data: (data + ': ' + script) });
+                        }
 
+                    }
+                } else {
+                    deferred.reject("Not found");
                 }
+
             }
         });
         } catch (error) {
