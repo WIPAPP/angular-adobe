@@ -12,7 +12,7 @@ angular.module('codemill.adobe', [])
         $log.debug('script', script);
         try {
         csInterface.evalScript(script, function (data) {
-            if (typeof returnIsObject === 'undefined' || returnIsObject === null || returnIsObject !== 'true') {
+            if (typeof returnIsObject === 'undefined' || returnIsObject === null || returnIsObject !== true) {
                 deferred.resolve(data)
             }
             else {
