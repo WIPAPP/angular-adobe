@@ -157,6 +157,10 @@ angular.module('codemill.adobe', [])
       this.isHostAvailable = function () {
         return hostAvailable;
       };
+      
+      this.getHost = function () {
+          return csInterface.getHostEnvironment();
+      };
 
       this.openDirectoryDialog = function(title, initialPath) {
         if (hostAvailable) {
