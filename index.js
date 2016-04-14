@@ -128,6 +128,7 @@ angular.module('codemill.adobe', [])
         if (typeof config === 'undefined' || config === null) {
           return config;
         }
+          $log.debug("config: ", config);
         var base = null;
         switch(config.pathType) {
           case 'null':
@@ -137,6 +138,8 @@ angular.module('codemill.adobe', [])
               cep.fs.makedir(config.filePath);
             }
             return config.filePath;
+        case 'custom extension':
+            return config.filePath.replace(/\\/g, '/');
           default:
             base = getBase(config.pathType);
             break;
@@ -151,7 +154,7 @@ angular.module('codemill.adobe', [])
           }
         }
         $log.info('File path ' + filePath);
-        return filePath.replace(/\\/g, '/');;
+        return filePath.replace(/\\/g, '/');
       };
 
       this.isHostAvailable = function () {
@@ -169,4 +172,9 @@ angular.module('codemill.adobe', [])
         return '';
       };
 
+        this.showOpenDialogEx = function(title) {
+            if (hostAvailable) {
+                return cep.fs.showOpenDialogEx(false, false, title, "~", ["epr"], "", "OK")
+            };
+        };
     }]);
