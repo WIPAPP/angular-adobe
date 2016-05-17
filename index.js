@@ -177,4 +177,10 @@ angular.module('codemill.adobe', [])
                 return cep.fs.showOpenDialogEx(false, false, title, "~", ["epr"], "", "OK")
             };
         };
+        
+        this.showOpenDialogFile = function (title, fileTypes) {
+            if (hostAvailable) {
+                return cep.fs.showOpenDialogEx(false, false, title, "~", fileTypes, "", "OK")
+            };
+        };
     }]);
