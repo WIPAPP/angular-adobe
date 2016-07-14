@@ -161,7 +161,11 @@ angular.module('codemill.adobe', [])
       };
       
       this.getHost = function () {
+        if (hostAvailable) {
           return csInterface.getHostEnvironment();
+        } else {
+          return {appId : "PPRO"};
+        }
       };
 
       this.openDirectoryDialog = function(title, initialPath) {
