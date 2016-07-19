@@ -18,7 +18,7 @@ angular.module('codemill.adobe', [])
                 if(typeof data !== "undefined" && data !== null)
                 {
                     try {
-                      let json;
+                      var json;
                       if (typeof JSON !== 'object') {
                           json = Function("return " + data + "")();
                       } else {
