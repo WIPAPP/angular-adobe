@@ -18,7 +18,13 @@ angular.module('codemill.adobe', [])
                 if(typeof data !== "undefined" && data !== null)
                 {
                     try {
-                        deferred.resolve(JSON.parse(data));
+                      let json;
+                      if (typeof JSON !== 'object') {
+                          json = Function("return " + data + "")();
+                      } else {
+                          json = JSON.parse(data);
+                      }
+                        deferred.resolve(json);
                     } catch (error) {
                         $log.debug(error);
                         if(typeof data === "undefined" || data === null || typeof script === "undefined" || script === null)
